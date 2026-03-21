@@ -1,0 +1,143 @@
+{
+  "skill_name": "cross-agent-skill-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Sync the pdf skill to all tools. If I do not provide complete details, ask me step by step in the fixed workflow and do not execute anything early.",
+      "prompt_zh": "把 pdf 技能同步到所有工具。如果我没有把条件说完整，你就按固定流程一步一步问我，别先自己执行。",
+      "expected_output": "The agent should explain the workflow first, then ask for scope before source, skill, and agents, stop on each missing field, and wait for explicit confirmation before any apply step.",
+      "files": [],
+      "expectations": [
+        "The agent explains the workflow before collecting selections or executing anything.",
+        "The first required interactive step is scope selection.",
+        "The workflow asks for missing fields in the order scope, source, skill, agent.",
+        "The agent shows a dry-run plan before any apply step.",
+        "The agent does not perform installation or skill creation workflows."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I have not checked this in a long time. First show me the current differences at the project level. I only care about cursor, codex, and claude code.",
+      "prompt_zh": "我很久没关注了，先帮我看看当前项目下的差异。我只关心 cursor、codex 和 claude code 这三个工具。",
+      "expected_output": "The agent should treat this as a status-first request, confirm or keep project scope, ask for source if missing, then return a structured status explanation with an agent-first view, a skill view, and a logical summary without attempting install or sync execution.",
+      "files": [],
+      "expectations": [
+        "The agent uses project scope and the current project root for target resolution.",
+        "The result first emphasizes differences by agent instead of dumping only raw rows.",
+        "The result also includes a per-skill coverage view.",
+        "The result includes a summary conclusion or next suggestion that helps the user decide what to do next.",
+        "The workflow does not propose installing missing skills from GitHub.",
+        "If the user did not specify source or skill, the agent should stop and ask for them before moving to execution."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Remove agent-browser from everywhere, but only unlink symlinks and never delete real directories. Show me every unlink action before execution and wait for confirmation.",
+      "prompt_zh": "从所有地方移除 agent-browser，但是只能解除软链，不能删真实目录。执行前把将要 unlink 的内容都列出来给我确认。",
+      "expected_output": "The agent should use a remove workflow, skip source selection, collect scope, skill, and agent, produce a dry-run unlink plan, refuse to delete non-symlink paths, and require explicit confirmation before apply.",
+      "files": [],
+      "expectations": [
+        "The remove workflow does not require source selection because it only affects target-side links.",
+        "The remove workflow uses unlink semantics rather than rm or recursive deletion.",
+        "The dry-run explicitly lists the unlink actions before execution.",
+        "Non-symlink targets are skipped and reported as safety exceptions.",
+        "The final result is summarized in a structured, easy-to-follow report."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I added a new team-shared skills source at ~/company/skills and I also want to include custom-agent in the sync model. Show me how to configure it, then inspect only the skills from that new source.",
+      "prompt_zh": "我新增了一个 team-shared skills 源在 ~/company/skills，还想把 custom-agent 也纳入同步。告诉我该怎么配，然后只看这个新源里有哪些技能。",
+      "expected_output": "The agent should explain the shell config format for adding a source and agent mapping, point to the bundled config example, and use the selected source for inventory rather than assuming only built-in sources exist.",
+      "files": [],
+      "expectations": [
+        "The agent treats sources and agents as configuration-driven rather than hard-coded.",
+        "The response references shell config entries rather than proposing Python or JSON config machinery.",
+        "The inventory flow can be restricted to the user-selected source."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Help me sync skills, but right now I only know that I want project scope. Do not guess the rest. Ask for missing information one step at a time.",
+      "prompt_zh": "帮我同步 skill，但是我现在只知道想处理项目级，其他你别猜，缺什么就一步一步问我。",
+      "expected_output": "The agent should keep the provided scope, then ask only for source, wait for the answer, then ask only for skill, then ask only for agent, instead of bundling or skipping steps.",
+      "files": [],
+      "expectations": [
+        "The agent keeps already-provided fields instead of re-asking them.",
+        "The agent asks only one missing step at a time.",
+        "The agent does not inspect or execute later stages before the current stage is confirmed."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I am not sure about the current skill state across the agents. Analyze it first, then I will decide what to change.",
+      "prompt_zh": "我不确定现在各个 agent 的 skill 状态，先帮我分析一下再决定怎么调。",
+      "expected_output": "The agent should trigger this skill for a status-first scenario, explain the workflow, ask for scope first, then source, and treat the request as status or inventory rather than immediately pushing the user into sync.",
+      "files": [],
+      "expectations": [
+        "The trigger behavior covers the 'state unclear, inspect first' scenario.",
+        "The agent treats status-first exploration as a primary use case, not an edge case.",
+        "The agent asks for scope and source before presenting any difference analysis."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "First check whether the skills across several agents are aligned. If they are not aligned, I will decide what to change afterwards.",
+      "prompt_zh": "先帮我看看几个 agent 的 skill 是不是一致，不一致的话我再决定怎么调。",
+      "expected_output": "The agent should trigger this skill because the topic is explicitly about cross-agent skills, explain the workflow, and handle it as a status-first request.",
+      "files": [],
+      "expectations": [
+        "The trigger logic keys off skill-centered language such as skill, skills, or agent skill.",
+        "The agent treats the request as status-first rather than immediately planning sync.",
+        "The result framing stays centered on skill differences, not generic agent comparison."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Help me compare which of these agents performs better.",
+      "prompt_zh": "帮我比较一下这些 agent 哪个效果更好。",
+      "expected_output": "The skill should not be treated as the right fit because the request is about general agent comparison rather than skill or agent-skill management.",
+      "files": [],
+      "expectations": [
+        "Generic agent comparison without a skill topic is treated as out of scope for this skill.",
+        "The trigger boundary avoids overfiring on non-skill agent questions."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "If I do not specify the source or agent clearly, show me numbered option lists so I can just reply with 1 or 1,3.",
+      "prompt_zh": "如果我没说清楚 source 和 agent，你给我的列表要带序号，我直接回 1 或 1,3 就行。",
+      "expected_output": "The agent should present numbered choice lists for selection steps and explicitly allow replies by number as well as by label.",
+      "files": [],
+      "expectations": [
+        "Choice lists are rendered with numbers.",
+        "The interaction supports number-based replies such as 1 or 1,3.",
+        "The interaction still supports label-based replies too."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Gemini already auto-loads the agents source. If I sync a skill from agents to Gemini, do not create a redundant link. Count it as externally covered instead.",
+      "prompt_zh": "Gemini 已经会自动读取 agents 源。如果我要把 agents 源里的 skill 同步到 Gemini，不要再创建重复链接，而是把它算作外部覆盖。",
+      "expected_output": "The behavior should treat the selected skill as covered by an external source for Gemini, avoid redundant linking, and explain that the source is already auto-loaded.",
+      "files": [],
+      "expectations": [
+        "External-source coverage can be configured per agent.",
+        "Sync planning avoids redundant links when the chosen source is already auto-loaded by the tool.",
+        "The user-facing explanation makes it clear that the skill is available without an extra link."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "When checking Gemini skill status, count skills from its configured external sources as available even if there is no symlink in ~/.gemini/skills.",
+      "prompt_zh": "检查 Gemini skill 状态时，即使 ~/.gemini/skills 里没有软链，也要把配置过的外部 source 中的 skill 算作可用。",
+      "expected_output": "Status reporting should include externally covered skills as available rather than missing, and the explanation should distinguish external coverage from explicit links.",
+      "files": [],
+      "expectations": [
+        "Status output does not misclassify externally loaded skills as missing.",
+        "The status model distinguishes external coverage from explicit links.",
+        "The summary remains logical and easy for the user to understand."
+      ]
+    }
+  ]
+}
